@@ -138,20 +138,22 @@ In command line interfaces such as cwltool, your input should look like the foll
   "run_pe_reads_processing": false,
   "run_se_reads_processing": true,
   "run_bam_processing": false,
-  "input_se_reads_list": [
-    {
-      "class": "File",
-      "location": "/path/to/single1.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/single2.fastq"
-    }
-  ],
-  "inputs_se_rgs_list": [
-    "@RG\\tID:single1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
-    "@RG\\tID:single2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
-  ],
+  "input_se_fastqs": {
+    "input_se_reads_list": [
+      {
+        "class": "File",
+        "location": "/path/to/single1.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/single2.fastq"
+      }
+    ],
+    "inputs_se_rgs_list": [
+      "@RG\\tID:single1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:single2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
+    ]
+  },
   ...
 }
 ```
@@ -167,39 +169,41 @@ order. In command line interfaces such as cwltool, your input should look like t
   "run_pe_reads_processing": true,
   "run_se_reads_processing": false,
   "run_bam_processing": false,
-  "input_pe_reads_list": [
-    {
-      "class": "File",
-      "location": "/path/to/sample1_R1.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample2_R1fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample3_R1.fastq"
-    }
-  ],
-  "input_pe_mates_list": [
-    {
-      "class": "File",
-      "location": "/path/to/sample1_R2.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample2_R2.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample3_R2.fastq"
-    }
-  ],
-  "inputs_pe_rgs_list": [
-    "@RG\\tID:sample1\\tLB:library_name\\tPL:ILLUMINA\tSM:sample_name",
-    "@RG\\tID:sample2\\tLB:library_name\\tPL:ILLUMINA\tSM:sample_name",
-    "@RG\\tID:sample3\\tLB:library_name\\tPL:ILLUMINA\tSM:sample_name"
-  ],
+  "input_pe_fastqs": {
+    "input_pe_reads_list": [
+      {
+        "class": "File",
+        "location": "/path/to/sample1_R1.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample2_R1fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample3_R1.fastq"
+      }
+    ],
+    "input_pe_mates_list": [
+      {
+        "class": "File",
+        "location": "/path/to/sample1_R2.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample2_R2.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample3_R2.fastq"
+      }
+    ],
+    "inputs_pe_rgs_list": [
+      "@RG\\tID:sample1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:sample2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:sample3\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
+    ]
+  }
   ...
 }
 ```
@@ -223,53 +227,57 @@ all three your command line input would look like the following.
       "location": "/path/to/bam2.bam"
     }
   ],
-  "input_se_reads_list": [
-    {
-      "class": "File",
-      "location": "/path/to/single1.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/single2.fastq"
-    }
-  ],
-  "inputs_se_rgs_list": [
-    "@RG\\tID:single1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
-    "@RG\\tID:single2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
-  ],
-  "input_pe_reads_list": [
-    {
-      "class": "File",
-      "location": "/path/to/sample1_R1.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample2_R1fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample3_R1.fastq"
-    }
-  ],
-  "input_pe_mates_list": [
-    {
-      "class": "File",
-      "location": "/path/to/sample1_R2.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample2_R2.fastq"
-    },
-    {
-      "class": "File",
-      "location": "/path/to/sample3_R2.fastq"
-    }
-  ],
-  "inputs_pe_rgs_list": [
-    "@RG\\tID:sample1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
-    "@RG\\tID:sample2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
-    "@RG\\tID:sample3\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
-  ],
+  "input_se_fastqs": {
+    "input_se_reads_list": [
+      {
+        "class": "File",
+        "location": "/path/to/single1.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/single2.fastq"
+      }
+    ],
+    "inputs_se_rgs_list": [
+      "@RG\\tID:single1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:single2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
+    ]
+  },
+  "input_pe_fastqs": {
+    "input_pe_reads_list": [
+      {
+        "class": "File",
+        "location": "/path/to/sample1_R1.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample2_R1fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample3_R1.fastq"
+      }
+    ],
+    "input_pe_mates_list": [
+      {
+        "class": "File",
+        "location": "/path/to/sample1_R2.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample2_R2.fastq"
+      },
+      {
+        "class": "File",
+        "location": "/path/to/sample3_R2.fastq"
+      }
+    ],
+    "inputs_pe_rgs_list": [
+      "@RG\\tID:sample1\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:sample2\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name",
+      "@RG\\tID:sample3\\tLB:library_name\\tPL:ILLUMINA\\tSM:sample_name"
+    ]
+  }
   ...
 }
 ```

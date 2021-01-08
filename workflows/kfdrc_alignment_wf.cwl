@@ -63,6 +63,23 @@ doc: |
     input_pe_reads_list: { type: 'File[]?', doc: "List of input R1 paired end fastq reads" }
     input_pe_mates_list: { type: 'File[]?', doc: "List of input R2 paired end fastq reads" }
     input_pe_rgs_list: { type: 'string[]?', doc: "List of RG strings to use in PE processing" }
+    input_pe_fastqs:
+      type:
+        - 'null'
+        - type: record
+          name: input_pe_fastqs
+          fields:
+            - { name: input_pe_reads_list, type: 'File[]', doc: "List of input R1 paired end fastq reads" }
+            - { name: input_pe_mates_list, type: 'File[]', doc: "List of input R2 paired end fastq reads" }
+            - { name: input_pe_rgs_list, type: 'string[]', doc: "List of RG strings to use in PE processing" }
+    input_se_fastqs:
+      type:
+        - 'null'
+        - type: record
+          name: input_se_fastqs
+          fields:
+            - { name: input_se_reads_list, type: 'File[]', doc: "List of input R1 single end fastq reads" }
+            - { name: input_se_rgs_list, type: 'string[]', doc: "List of RG strings to use in PE processing" }
     input_se_reads_list: { type: 'File[]?', doc: "List of input single end fastq reads" }
     input_se_rgs_list: { type: 'string[]?', doc: "List of RG strings to use in SE processing" }
     run_bam_processing: { type: boolean, doc: "BAM processing will be run. Requires: input_bam_list" }
@@ -352,11 +369,23 @@ requirements:
 
 inputs:
   input_bam_list: {type: 'File[]?', doc: "List of input BAM files"}
-  input_pe_reads_list: {type: 'File[]?', doc: "List of input R1 paired end fastq reads"}
-  input_pe_mates_list: {type: 'File[]?', doc: "List of input R2 paired end fastq reads"}
-  input_pe_rgs_list: {type: 'string[]?', doc: "List of RG strings to use in PE processing"}
-  input_se_reads_list: {type: 'File[]?', doc: "List of input singlie end fastq reads"}
-  input_se_rgs_list: {type: 'string[]?', doc: "List of RG strings to use in SE processing"}
+  input_pe_fastqs:
+    type:
+      - 'null'
+      - type: record
+        name: input_pe_fastqs
+        fields:
+          - { name: input_pe_reads_list, type: 'File[]', doc: "List of input R1 paired end fastq reads" }
+          - { name: input_pe_mates_list, type: 'File[]', doc: "List of input R2 paired end fastq reads" }
+          - { name: input_pe_rgs_list, type: 'string[]', doc: "List of RG strings to use in PE processing" }
+  input_se_fastqs:
+    type:
+      - 'null'
+      - type: record
+        name: input_se_fastqs
+        fields:
+          - { name: input_se_reads_list, type: 'File[]', doc: "List of input R1 single end fastq reads" }
+          - { name: input_se_rgs_list, type: 'string[]', doc: "List of RG strings to use in PE processing" }
   reference_tar: {type: File, doc: "Tar file containing a reference fasta and, optionally,\
       \ its complete set of associated indexes (samtools, bwa, and picard)", sbg:suggestedValue: {
       class: File, path: 5f3161b8e4b09d9a7b5f4fc9, name: Homo_sapiens_assembly38.tgz}}
@@ -498,9 +527,9 @@ steps:
     run: ../subworkflows/kfdrc_process_pe_readslist2.cwl
     in:
       indexed_reference_fasta: bundle_secondaries/output
-      input_pe_reads_list: input_pe_reads_list
-      input_pe_mates_list: input_pe_mates_list
-      input_pe_rgs_list: input_pe_rgs_list
+      input_pe_reads_list: { source: input_pe_fastqs, valueFrom: $(self.input_pe_reads_list) }
+      input_pe_mates_list: { source: input_pe_fastqs, valueFrom: $(self.input_pe_mates_list) }
+      input_pe_rgs_list: { source: input_pe_fastqs, valueFrom: $(self.input_pe_rgs_list) }
       conditional_run: gatekeeper/scatter_pe_reads
       min_alignment_score: min_alignment_score
     scatter: conditional_run
@@ -510,8 +539,8 @@ steps:
     run: ../subworkflows/kfdrc_process_se_readslist2.cwl
     in:
       indexed_reference_fasta: bundle_secondaries/output
-      input_se_reads_list: input_se_reads_list
-      input_se_rgs_list: input_se_rgs_list
+      input_se_reads_list: {source: input_se_fastqs, valueFrom: $(self.input_se_reads_list) }
+      input_se_rgs_list: {source: input_se_fastqs, valueFrom: $(self.input_se_rgs_list) }
       conditional_run: gatekeeper/scatter_se_reads
       min_alignment_score: min_alignment_score
     scatter: conditional_run

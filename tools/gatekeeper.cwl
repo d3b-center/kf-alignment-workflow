@@ -16,7 +16,7 @@ arguments:
         if (inputs.run_bam_processing || inputs.run_pe_reads_processing ||  inputs.run_se_reads_processing) {
           return "echo Files Provided...Processing >&2 && exit 0"
         } else {
-          return "echo No BAMs or FASTQs provided, mission accomplished >&2 && exit 1"
+          return "echo ERROR: NO PROCESSING FLAGS NOT SET! Please set one or more of run_bam_processing, run_pe_reads_processing, or run_se_reads_processing to True >&2 && exit 1"
         }
       }
 
